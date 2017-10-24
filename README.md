@@ -1,4 +1,5 @@
-# Quasar App
+# Ronny Quasar
+Ronny Quasar, the strong auth-guy's face!
 
 > A Quasar project
 
