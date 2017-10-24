@@ -40,6 +40,10 @@ export default new VueRouter({
         {
           path: 'change-password',
           component: load('user/changePassword')
+        },
+        {
+          path: '',
+          redirect: 'apps'
         }
       ]
     },
@@ -55,6 +59,10 @@ export default new VueRouter({
         {
           path: 'details/:id',
           component: load('admin/details')
+        },
+        {
+          path: '',
+          redirect: 'users'
         }
       ]
     },

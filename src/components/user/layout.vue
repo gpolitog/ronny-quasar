@@ -1,23 +1,14 @@
 <template>
   <!-- Configure "view" prop for QLayout -->
-  <q-layout view="hHh Lpr fff" :left-class="{'bg-grey-2': true}">
+  <q-layout ref="layout" view="hHh lpr fff" :left-class="{'bg-grey-2': true}">
     <q-toolbar slot="header">
       <!-- opens drawer below -->
-      <button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
-        <i>menu</i>
-      </button>
+      <q-btn flat class="hide-on-drawer-visible" @click="$refs.layout.toggleLeft()()">
+        <q-icon name="menu" />
+      </q-btn>
 
       <q-toolbar-title>Ronny</q-toolbar-title>
     </q-toolbar>
-
-    <!-- Navigation Tabs
-    <q-tabs slot="navigation">
-    <q-route-tab slot="title" icon="view_quilt" to="/layout/about" replace hide="icon" label="About" />
-    <q-route-tab slot="title" icon="view_day" to="/layout/toolbar" replace hide="icon" label="Toolbar" />
-    <q-route-tab slot="title" icon="view_day" to="/layout/tabs" replace label="Tabs" />
-    <q-route-tab slot="title" icon="input" to="/layout/drawer" replace label="Drawer" />
-  </q-tabs>
--->
 
 <!-- Left Side Panel -->
 <div slot="left">
@@ -76,7 +67,8 @@ import {
   QItem,
   QItemSide,
   QItemMain,
-  QSideLink
+  QSideLink,
+  QBtn
 } from 'quasar'
 
 export default {
@@ -93,7 +85,8 @@ export default {
     QItem,
     QItemSide,
     QItemMain,
-    QSideLink
+    QSideLink,
+    QBtn
   }
 }
 </script>
