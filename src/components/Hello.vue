@@ -1,10 +1,10 @@
 <template>
   <q-layout
     ref="layout"
-    view="lHh Lpr fff"
+    view="hHh Lpr fff"
     :left-class="{'bg-grey-2': true}"
   >
-    <q-toolbar slot="header" class="glossy">
+    <q-toolbar slot="header">
       <q-btn
         flat
         @click="$refs.layout.toggleLeft()"
@@ -51,11 +51,14 @@
       <router-view /> component
       if using subRoutes
     -->
-    <div class="layout-padding logo-container non-selectable no-pointer-events">
+    <!-- <div class="layout-padding logo-container non-selectable no-pointer-events">
       <div class="logo" :style="position">
         <img src="~assets/quasar-logo-full.svg">
       </div>
-    </div>
+    </div> -->
+    <q-field label="Test" :count="10">
+      <q-input suffix='@jensw.be' v-model="model" max-length="10" />
+    </q-field>
   </q-layout>
 </template>
 
@@ -73,7 +76,9 @@ import {
   QListHeader,
   QItem,
   QItemSide,
-  QItemMain
+  QItemMain,
+  QField,
+  QInput
 } from 'quasar'
 
 const
@@ -106,7 +111,9 @@ export default {
     QListHeader,
     QItem,
     QItemSide,
-    QItemMain
+    QItemMain,
+    QField,
+    QInput
   },
   data () {
     return {
@@ -115,7 +122,8 @@ export default {
       moveX: 0,
       moveY: 0,
       rotateY: 0,
-      rotateX: 0
+      rotateX: 0,
+      model: ''
     }
   },
   computed: {

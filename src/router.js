@@ -25,7 +25,39 @@ export default new VueRouter({
   scrollBehavior: () => ({ y: 0 }),
 
   routes: [
-    { path: '/', component: load('Hello') },
+    {
+      path: '/',
+      component: load('user/layout'),
+      children: [
+        {
+          path: 'apps',
+          component: load('user/apps')
+        },
+        {
+          path: 'change-email',
+          component: load('user/changeEmail')
+        },
+        {
+          path: 'change-password',
+          component: load('user/changePassword')
+        }
+      ]
+    },
+
+    {
+      path: '/admin/',
+      component: load('admin/layout'),
+      children: [
+        {
+          path: 'users',
+          component: load('admin/users')
+        },
+        {
+          path: 'details/:id',
+          component: load('admin/details')
+        }
+      ]
+    },
 
     // Always leave this last one
     { path: '*', component: load('Error404') } // Not found
