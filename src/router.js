@@ -26,20 +26,28 @@ export default new VueRouter({
 
   routes: [
     {
+      path: '/login',
+      component: load('Login')
+    },
+    {
+      path: '/logout',
+      redirect: '/login'
+    },
+    {
       path: '/',
-      component: load('user/layout'),
+      component: load('user/Layout'),
       children: [
         {
           path: 'apps',
-          component: load('user/apps')
+          component: load('user/Apps')
         },
         {
           path: 'change-email',
-          component: load('user/changeEmail')
+          component: load('user/ChangeEmail')
         },
         {
           path: 'change-password',
-          component: load('user/changePassword')
+          component: load('user/ChangePassword')
         },
         {
           path: '',
@@ -50,15 +58,15 @@ export default new VueRouter({
 
     {
       path: '/admin/',
-      component: load('admin/layout'),
+      component: load('admin/Layout'),
       children: [
         {
           path: 'users',
-          component: load('admin/users')
+          component: load('admin/Users')
         },
         {
           path: 'details/:id',
-          component: load('admin/details')
+          component: load('admin/Details')
         },
         {
           path: '',

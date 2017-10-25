@@ -1,0 +1,47 @@
+<template>
+  <div class="window-height window-width bg-light row items-center justify-center">
+    <div class="row col-xs-10 col-sm-8 col-md-6 col-lg-4 shadow-4 bg-white sm-gutter" style="padding-right: 16px; padding-bottom: 16px">
+      <div class="col-12">
+        <q-input class="no-margin" float-label="E-mail" v-model="email" />
+      </div>
+
+      <div class="col-12">
+        <q-input type="password" class="no-margin" float-label="Wachtwoord" v-model="password" />
+      </div>
+
+      <div class="col-12">
+        <q-btn class="no-margin full-width">Aanmelden</q-btn>
+      </div>
+
+      <div class="col-xs-12 col-sm-6">
+        <q-btn color="blue-9" class="no-margin full-width">Inloggen met Facebook</q-btn>
+      </div>
+
+      <div class="col-xs-12 col-sm-6">
+        <q-btn color="red-6" class="no-margin full-width">Inloggen met Google</q-btn>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {
+  QBtn,
+  QField,
+  QInput
+} from 'quasar'
+
+export default {
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  components: {
+    QBtn,
+    QField,
+    QInput
+  }
+}
+</script>
