@@ -10,7 +10,7 @@
       </div>
 
       <div class="col-12">
-        <q-btn class="no-margin full-width">Aanmelden</q-btn>
+        <q-btn class="no-margin full-width" @click="doLogin">Aanmelden</q-btn>
       </div>
 
       <div class="col-xs-12 col-sm-6">
@@ -42,6 +42,24 @@ export default {
     QBtn,
     QField,
     QInput
+  },
+  methods: {
+    doLogin () {
+      let credentials = {
+        username: this.email,
+        password: this.password
+      }
+
+      console.log('Try login')
+      let http = new XMLHttpRequest()
+      http.open('POST', 'http://localhost:3000/local/login', true)
+      http.setRequestHeader('Content-type', 'application/json')
+      http.onreadystatechange = function () {
+        console.log(http.responseText)
+        console.log(http)
+      }
+      http.send(JSON.stringify(credentials))
+    }
   }
 }
 </script>
