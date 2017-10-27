@@ -31,7 +31,7 @@ export default new VueRouter({
     },
     {
       path: '/logout',
-      redirect: '/login'
+      component: load('Logout')
     },
     {
       path: '/',

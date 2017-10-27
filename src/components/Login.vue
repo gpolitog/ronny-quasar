@@ -26,6 +26,7 @@
 
 <script>
 import {
+  Alert,
   QBtn,
   QField,
   QInput
@@ -45,20 +46,29 @@ export default {
   },
   methods: {
     doLogin () {
-      let credentials = {
-        username: this.email,
-        password: this.password
-      }
-
-      console.log('Try login')
+      // Build request
+      const vue = this
       let http = new XMLHttpRequest()
       http.open('POST', 'http://localhost:3000/local/login', true)
       http.setRequestHeader('Content-type', 'application/json')
+
+      // Redirect to / (apps) after successful login
+      // Show error on invalid credentials or banned account
       http.onreadystatechange = function () {
-        console.log(http.responseText)
-        console.log(http)
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            vue.$router.replace('/')
+          } else {
+            Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
+          }
+        }
       }
-      http.send(JSON.stringify(credentials))
+
+      // Send request with credentials
+      http.send(JSON.stringify({
+        username: this.email,
+        password: this.password
+      }))
     }
   }
 }
