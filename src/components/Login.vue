@@ -6,11 +6,11 @@
       </div>
 
       <div class="col-12">
-        <q-input type="password" class="no-margin" float-label="Wachtwoord" v-model="password" />
+        <q-input ref="passwordInput" type="password" class="no-margin" float-label="Wachtwoord" v-model="password" />
       </div>
 
       <div class="col-12">
-        <q-btn class="no-margin full-width" @click="doLogin">Aanmelden</q-btn>
+        <q-btn class="no-margin full-width" @click="doLogin" loader :disabled="!emailPasswordCheck">Aanmelden</q-btn>
       </div>
 
       <div class="col-xs-12 col-sm-6">
@@ -39,13 +39,27 @@ export default {
       password: ''
     }
   },
+
+  computed: {
+    emailPasswordCheck () {
+      return this.email.length && this.password.length
+    }
+  },
+
   components: {
     QBtn,
     QField,
     QInput
   },
+
   methods: {
-    doLogin () {
+    doLogin (event, done) {
+      // Close alert if shown
+      if (this.alertShown) {
+        this.alert.dismiss()
+        this.alertShown = false
+      }
+
       // Build request
       const vue = this
       let http = new XMLHttpRequest()
@@ -59,8 +73,12 @@ export default {
           if (this.status === 200) {
             vue.$router.replace('/')
           } else {
-            Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
+            vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
+            vue.alertShown = true
+            vue.password = ''
+            vue.$refs.passwordInput.focus()
           }
+          done()
         }
       }
 
