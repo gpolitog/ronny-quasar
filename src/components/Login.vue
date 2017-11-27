@@ -2,11 +2,11 @@
   <div class="window-height window-width bg-light row items-center justify-center">
     <div class="row col-xs-10 col-sm-8 col-md-6 col-lg-4 shadow-4 bg-white sm-gutter" style="padding-right: 16px; padding-bottom: 16px">
       <div class="col-12">
-        <q-input class="no-margin" float-label="E-mail" v-model="email" />
+        <q-input class="no-margin" float-label="E-mail" v-model="email" @keyup.enter="doLogin" />
       </div>
 
       <div class="col-12">
-        <q-input ref="passwordInput" type="password" class="no-margin" float-label="Wachtwoord" v-model="password" />
+        <q-input ref="passwordInput" type="password" class="no-margin" float-label="Wachtwoord" v-model="password" @keyup.enter="doLogin" />
       </div>
 
       <div class="col-12">
@@ -72,13 +72,17 @@ export default {
         if (this.readyState === 4) {
           if (this.status === 200) {
             vue.$router.replace('/')
-          } else {
+          }
+          else {
             vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
             vue.alertShown = true
             vue.password = ''
             vue.$refs.passwordInput.focus()
           }
+
+          // TODO: Check executable!!!
           done()
+
         }
       }
 

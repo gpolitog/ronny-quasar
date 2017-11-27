@@ -22,7 +22,8 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     rules: cssUtils.styleRules({
       sourceMap: config.dev.cssSourceMap,
-      postcss: true
+      // TODO: Fix postcss
+      postcss: false
     })
   },
   plugins: [
