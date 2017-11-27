@@ -3,8 +3,12 @@
   <div class="layout-padding">
     <h1>Apps</h1>
     <div>
-      <app-card />
-      <app-card />
+      <app-card
+      name="Stocky"
+      description="Een beursfuif"
+      img="statics/quasar-logo.png"
+      url="https://stocky.jensw.be"
+      />
     </div>
   </div>
 </template>
