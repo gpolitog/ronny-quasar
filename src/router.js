@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Auth from './Auth'
 
 Vue.use(VueRouter)
 
@@ -36,6 +37,7 @@ export default new VueRouter({
     {
       path: '/',
       component: load('user/Layout'),
+      beforeEnter: userAuth,
       children: [
         {
           path: 'apps',
@@ -59,6 +61,7 @@ export default new VueRouter({
     {
       path: '/admin/',
       component: load('admin/Layout'),
+      beforeEnter: adminAuth,
       children: [
         {
           path: 'users',
@@ -79,3 +82,19 @@ export default new VueRouter({
     { path: '*', component: load('Error404') } // Not found
   ]
 })
+
+function userAuth (from, to, next) {
+  if (Auth.isLoggedIn()) {
+    next()
+  } else {
+    next('/login')
+  }
+}
+
+function adminAuth (from, to, next) {
+  if (Auth.isLoggedIn() && Auth.hasRole('admin')) {
+    next()
+  } else {
+    next('/')
+  }
+}

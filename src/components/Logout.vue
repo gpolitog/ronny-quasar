@@ -7,6 +7,7 @@
 
 <script>
 import { QIcon } from 'quasar'
+import Auth from '../Auth'
 
 export default {
   data () {
@@ -19,6 +20,7 @@ export default {
     http.open('GET', 'http://localhost:3000/logout', true)
     http.onreadystatechange = function () {
       if (this.readyState === 4 && this.status === 200) {
+        Auth.logout()
         vue.$router.replace('/login')
       }
     }

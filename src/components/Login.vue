@@ -31,6 +31,7 @@ import {
   QField,
   QInput
 } from 'quasar'
+import Auth from '../Auth'
 
 export default {
   data () {
@@ -71,17 +72,18 @@ export default {
       http.onreadystatechange = function () {
         if (this.readyState === 4) {
           if (this.status === 200) {
+            Auth.login()
             vue.$router.replace('/')
-          }
-          else {
+          } else {
             vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
             vue.alertShown = true
             vue.password = ''
             vue.$refs.passwordInput.focus()
           }
 
-          // TODO: Check executable!!!
-          done()
+          if (typeof done === 'function') {
+            done()
+          }
         }
       }
 
