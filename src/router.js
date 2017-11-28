@@ -35,6 +35,10 @@ export default new VueRouter({
       component: load('Logout')
     },
     {
+      path: '/register',
+      component: load('Register')
+    },
+    {
       path: '/',
       component: load('user/Layout'),
       beforeEnter: userAuth,

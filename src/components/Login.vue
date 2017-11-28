@@ -20,6 +20,10 @@
       <div class="col-xs-12 col-sm-6">
         <q-btn color="red-6" class="no-margin full-width">Inloggen met Google</q-btn>
       </div>
+
+      <div class="col-12">
+        <router-link to="/register" class="text-center"><p class="no-margin">Registreer via email</p></router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -31,6 +35,7 @@ import {
   QField,
   QInput
 } from 'quasar'
+import isEmail from 'isemail'
 import Auth from '../Auth'
 
 export default {
@@ -43,7 +48,7 @@ export default {
 
   computed: {
     emailPasswordCheck () {
-      return this.email.length && this.password.length
+      return this.password.length && isEmail.validate(this.email)
     }
   },
 
@@ -82,6 +87,8 @@ export default {
           }
 
           if (typeof done === 'function') {
+            // Function was called by loader button
+            // => Stops loader
             done()
           }
         }
