@@ -1,30 +1,19 @@
 <template>
   <div class="window-height window-width bg-light row items-center justify-center">
     <div class="row col-xs-10 col-sm-8 col-md-6 col-lg-4 shadow-4 bg-white sm-gutter" style="padding-right: 16px; padding-bottom: 16px">
-      <p class="caption" style="font-size: 1.5rem; padding-left: 1rem; padding-top: 1rem">Registreren</p>
-
+      <h1 style="padding-left: 1rem">Proficiat!</h1>
+      <p style="padding-left: 1rem">Er is een mail verzonden naar het opgegeven mailadres met een verificatiecode. Gelieve deze hieronder in te geven:</p>
+      <p>{{email}}</p>
       <div class="col-12">
-        <q-input class="no-margin" float-label="Naam (of nickname)" v-model="name" />
-      </div>
-
-      <div class="col-12">
-        <q-input class="no-margin" float-label="E-mail" v-model="email" />
-      </div>
-
-      <div class="col-12">
-        <q-input ref="passwordInput" type="password" class="no-margin" float-label="Wachtwoord" v-model="password" />
-      </div>
-
-      <div class="col-12">
-        <q-input ref="passwordInput" type="password" class="no-margin" float-label="Herhaal wachtwoord" v-model="repeatPassword" />
+        <q-input class="no-margin" float-label="Code (8 cijfers)" v-model="code" :length="8" />
       </div>
 
       <div class="col-xs-12 col-sm-6">
-        <q-btn class="no-margin full-width" @click="doLogin" loader :disabled="!checkRegister" color="primary">Registreer<br/>TODO: Recaptcha</q-btn>
+        <q-btn class="no-margin full-width" @click="doLogin" loader :disabled="!checkCode" color="primary">Verifieer</q-btn>
       </div>
 
       <div class="col-xs-12 col-sm-6">
-        <q-btn class="no-margin full-width" @click="cancelRegister">Annuleer</q-btn>
+        <q-btn class="no-margin full-width" @click="toLogin">Naar login</q-btn>
       </div>
     </div>
   </div>
@@ -38,21 +27,23 @@ import {
   QField,
   QInput
 } from 'quasar'
-import isEmail from 'isemail'
 
 export default {
   data () {
+    console.log(this.base)
+    console.log(atob(this.base))
+    console.log(JSON.parse(atob(this.base)).email)
     return {
-      name: '',
-      email: '',
-      password: '',
-      repeatPassword: ''
+      code: '',
+      email: this.$root.email
     }
   },
 
+  props: ['base'],
+
   computed: {
-    checkRegister () {
-      return this.name.length && this.password.length && this.password === this.repeatPassword && isEmail.validate(this.email)
+    checkCode () {
+      return !isNaN(this.code) && this.code.length === 8
     }
   },
 
@@ -63,7 +54,7 @@ export default {
   },
 
   methods: {
-    cancelRegister () {
+    toLogin () {
       this.$router.replace('/login')
     },
 
@@ -79,11 +70,7 @@ export default {
       http.onreadystatechange = function () {
         if (this.readyState === 4) {
           if (this.status === 200) {
-            const base = btoa(JSON.stringify({
-              token: 'a',
-              email: vue.email
-            }))
-            vue.$router.replace(`/verify/${base}`)
+            console.log('Verified')
           } else {
             vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
             vue.alertShown = true

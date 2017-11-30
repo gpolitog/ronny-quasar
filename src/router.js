@@ -39,6 +39,15 @@ export default new VueRouter({
       component: load('Register')
     },
     {
+      path: '/verify',
+      redirect: '/login'
+    },
+    {
+      path: '/verify/:base',
+      component: load('Verify'),
+      props: true
+    },
+    {
       path: '/',
       component: load('user/Layout'),
       beforeEnter: userAuth,
