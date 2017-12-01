@@ -2,14 +2,14 @@
   <div class="window-height window-width bg-light row items-center justify-center">
     <div class="row col-xs-10 col-sm-8 col-md-6 col-lg-4 shadow-4 bg-white sm-gutter" style="padding-right: 16px; padding-bottom: 16px">
       <h1 style="padding-left: 1rem">Proficiat!</h1>
-      <p style="padding-left: 1rem">Er is een mail verzonden naar het opgegeven mailadres met een verificatiecode. Gelieve deze hieronder in te geven:</p>
-      <p>{{email}}</p>
+      <p style="padding-left: 1rem">Er is een verificatiecode verzonden naar "{{email}}". Gelieve deze hieronder in te vullen:</p>
+      <p>Token {{token}}</p>
       <div class="col-12">
-        <q-input class="no-margin" float-label="Code (8 cijfers)" v-model="code" :length="8" />
+        <q-input class="no-margin" float-label="Code (8 cijfers)" v-model="pin" :length="8" />
       </div>
 
       <div class="col-xs-12 col-sm-6">
-        <q-btn class="no-margin full-width" @click="doLogin" loader :disabled="!checkCode" color="primary">Verifieer</q-btn>
+        <q-btn class="no-margin full-width" @click="verifyPin" loader :disabled="!checkPin" color="primary">Verifieer</q-btn>
       </div>
 
       <div class="col-xs-12 col-sm-6">
@@ -20,30 +20,28 @@
 </template>
 
 <script>
-// TODO: Recaptcha
 import {
-  Alert,
   QBtn,
   QField,
   QInput
 } from 'quasar'
+import Auth from '../Auth'
 
 export default {
   data () {
-    console.log(this.base)
-    console.log(atob(this.base))
-    console.log(JSON.parse(atob(this.base)).email)
+    const details = JSON.parse(atob(this.base))
     return {
-      code: '',
-      email: this.$root.email
+      pin: '',
+      email: details.email,
+      token: details.token
     }
   },
 
   props: ['base'],
 
   computed: {
-    checkCode () {
-      return !isNaN(this.code) && this.code.length === 8
+    checkPin () {
+      return !isNaN(this.pin) && this.pin.length === 8
     }
   },
 
@@ -58,11 +56,11 @@ export default {
       this.$router.replace('/login')
     },
 
-    doLogin (event, done) {
+    verifyPin (event, done) {
       // Build request
       const vue = this
       let http = new XMLHttpRequest()
-      http.open('POST', 'http://localhost:3000/local/register', true)
+      http.open('POST', 'http://localhost:3000/local/verify', true)
       http.setRequestHeader('Content-type', 'application/json')
 
       // Redirect to / (apps) after successful login
@@ -70,23 +68,17 @@ export default {
       http.onreadystatechange = function () {
         if (this.readyState === 4) {
           if (this.status === 200) {
-            console.log('Verified')
-          } else {
-            vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
-            vue.alertShown = true
-            vue.password = ''
-            vue.$refs.passwordInput.focus()
+            Auth.login()
+            vue.$router.replace('/')
           }
-
           done()
         }
       }
 
-      // Send request with credentials
+      // Send request with data
       http.send(JSON.stringify({
-        name: this.name,
-        email: this.email,
-        password: this.password
+        token: this.token,
+        pin: this.pin
       }))
     }
   }

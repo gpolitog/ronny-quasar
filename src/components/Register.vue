@@ -79,17 +79,21 @@ export default {
       http.onreadystatechange = function () {
         if (this.readyState === 4) {
           if (this.status === 200) {
-            const base = btoa(JSON.stringify({
-              token: 'a',
-              email: vue.email
-            }))
-            vue.$router.replace(`/verify/${base}`)
-          } else {
-            vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
-            vue.alertShown = true
-            vue.password = ''
-            vue.$refs.passwordInput.focus()
+            const response = JSON.parse(this.responseText)
+
+            if (response.success) {
+              const base = btoa(JSON.stringify({
+                email: vue.email,
+                token: response.token
+              }))
+              vue.$router.replace(`/verify/${base}`)
+              return done()
+            }
           }
+          vue.alert = Alert.create({html: 'Ongeldige combinatie email/wachtwoord. Probeer opnieuw!'})
+          vue.alertShown = true
+          vue.password = ''
+          vue.$refs.passwordInput.focus()
 
           done()
         }
