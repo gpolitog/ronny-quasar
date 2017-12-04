@@ -3,9 +3,9 @@
     <div class="row col-xs-10 col-sm-8 col-md-6 col-lg-4 shadow-4 bg-white sm-gutter" style="padding-right: 16px; padding-bottom: 16px">
       <h1 style="padding-left: 1rem">Proficiat!</h1>
       <p style="padding-left: 1rem">Er is een verificatiecode verzonden naar "{{email}}". Gelieve deze hieronder in te vullen:</p>
-      <p>Token {{token}}</p>
+
       <div class="col-12">
-        <q-input class="no-margin" float-label="Code (8 cijfers)" v-model="pin" :length="8" />
+        <q-input class="no-margin" float-label="Code (8 cijfers)" v-model="pin" :length="8" @keyup.enter="verifyPin" />
       </div>
 
       <div class="col-xs-12 col-sm-6">
@@ -71,7 +71,11 @@ export default {
             Auth.login()
             vue.$router.replace('/')
           }
-          done()
+          if (typeof done === 'function') {
+            // Function was called by loader button
+            // => Stops loader
+            done()
+          }
         }
       }
 
